@@ -89,39 +89,89 @@ npm run preview
 
 ---
 
-## 5. Kjøre med Docker (senere)
+## 5. Kjøre med Docker
 
-Et eksempel på en enkel `Dockerfile` som kan legges i prosjektroten:
+Prosjektet er ferdig konfigurert for kjøring i Docker. Følgende filer ligger
+i prosjektroten:
 
-```dockerfile
-FROM node:20-alpine AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+| Fil                  | Hva den gjør                                                   |
+|----------------------|----------------------------------------------------------------|
+| `Dockerfile`         | Multi-stage build: bygger React-appen og serverer via Nginx    |
+| `.dockerignore`      | Holder unødvendige filer (node_modules, dist, .git osv.) ute   |
+| `nginx.conf`         | SPA-fallback til `index.html` + gzip og cache for statiske filer |
+| `docker-compose.yml` | Enkel orkestrering av containeren (service `nordic-web`)        |
 
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
+### 5.1 Krav
 
-Bygge og kjøre containeren:
+- [Docker Engine](https://docs.docker.com/engine/install/) (Linux, macOS eller Windows)
+- Eventuelt [Docker Compose](https://docs.docker.com/compose/) (følger med Docker Desktop)
+
+### 5.2 Bygge og kjøre med `docker`
 
 ```bash
+# Bygg image
 docker build -t nordic-devices .
-docker run -d -p 8080:80 --name nordic-devices nordic-devices
+
+# Start container i bakgrunnen, eksponer port 80
+docker run -d -p 80:80 --name nordic-web nordic-devices
 ```
 
-Siden vil da være tilgjengelig på:
+Siden er deretter tilgjengelig på:
 
 ```
-http://<server-ip>:8080
+http://localhost
+http://<server-ip>
 ```
 
-Docker er valgt fordi det gjør løsningen lett å flytte mellom maskiner,
-og fordi den startes likt i utvikling, test og produksjon.
+Stoppe og fjerne containeren:
+
+```bash
+docker stop nordic-web
+docker rm nordic-web
+```
+
+### 5.3 Bygge og kjøre med Docker Compose
+
+Enklere alternativ — én kommando bygger og starter alt:
+
+```bash
+docker compose up -d --build
+```
+
+Stoppe:
+
+```bash
+docker compose down
+```
+
+### 5.4 Kjøre på Ubuntu Server
+
+På Ubuntu Server (f.eks. testmiljøet `10.10.10.20`):
+
+```bash
+# 1. Installer Docker (én gang)
+sudo apt update
+sudo apt install -y docker.io docker-compose-plugin
+sudo systemctl enable --now docker
+
+# 2. Klon prosjektet
+git clone <repo-url>
+cd nordic-devices
+
+# 3. Bygg og start
+sudo docker compose up -d --build
+```
+
+Webapplikasjonen vil da være tilgjengelig på `http://10.10.10.20`.
+
+### 5.5 Hvorfor Docker?
+
+- **Portabel** — samme image kjører likt på utvikler-PC, test og produksjon.
+- **Reproduserbar** — `node:20-alpine` og `nginx:alpine` låser versjonene.
+- **Liten** — multi-stage build gir et lett produksjons-image basert på Nginx,
+  uten Node.js eller kildekode med.
+- **Enkelt å levere** — andre utviklere kan starte hele løsningen med
+  én kommando (`docker compose up`).
 
 ---
 
@@ -175,6 +225,10 @@ midlertidig.
 
 ```
 nordic-devices/
+├── Dockerfile
+├── .dockerignore
+├── docker-compose.yml
+├── nginx.conf
 ├── index.html
 ├── package.json
 ├── tsconfig.json

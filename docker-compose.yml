@@ -1,0 +1,7 @@
+services:
+  nordic-web:
+    build: .
+    container_name: nordic-web
+    ports:
+      - "80:80"
+    restart: unless-stopped
