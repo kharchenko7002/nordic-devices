@@ -1,0 +1,24 @@
+{
+  "name": "nordic-devices",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Nordic Devices AS - moderne IT-løsninger for små og mellomstore bedrifter. Webapplikasjon for ITK2004 prøveeksamen.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "start": "vite --host 0.0.0.0"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}
