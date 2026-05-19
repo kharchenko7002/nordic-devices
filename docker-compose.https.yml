@@ -1,0 +1,17 @@
+# Override som aktiverer HTTPS med self-signed sertifikat.
+# Bruk:
+#   docker compose -f docker-compose.yml -f docker-compose.https.yml up -d --build
+#
+# Forutsetter at ./certs inneholder:
+#   - nordic-devices.crt
+#   - nordic-devices.key
+# Se README, seksjonen "HTTPS med self-signed certificate".
+
+services:
+  nordic-web:
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+      - ./nginx.https.conf:/etc/nginx/conf.d/default.conf:ro

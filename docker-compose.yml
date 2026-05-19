@@ -4,4 +4,24 @@ services:
     container_name: nordic-web
     ports:
       - "80:80"
+    depends_on:
+      - nordic-api
+    restart: unless-stopped
+
+  nordic-api:
+    build: ./backend
+    container_name: nordic-api
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      TRUST_PROXY: "true"
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-465}
+      SMTP_SECURE: ${SMTP_SECURE:-true}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      CONFIRMATION_BCC: ${CONFIRMATION_BCC:-}
+    expose:
+      - "4000"
     restart: unless-stopped

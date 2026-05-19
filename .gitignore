@@ -11,3 +11,9 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+# Self-signed certificates skal aldri committes
+certs/
+*.crt
+*.key
+*.pem
