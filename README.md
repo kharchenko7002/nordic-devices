@@ -1,3 +1,21 @@
+# DOKUMENTASJON
+
+Prosjektdokumentasjon:  
+https://kostiantyn.katta-it.no/Nordic_Devices_AS_Dokumentasjon.pdf?_t=1779369328
+
+# VERCEL
+
+Demo-versjon på Vercel:  
+https://nordic-devices-qvgq.vercel.app
+
+# VIKTIG
+
+DETTE ER EN PROTOTYPE LAGET KUN FOR Å VISE DESIGNET.
+
+DET EKTE NETTSTEDET LIGGER PÅ MIN EGEN SERVER.  
+DER FUNGERER BACKEND-SYSTEMET ALLEREDE, INKLUDERT SENDING AV KVITTERINGER TIL E-POST.
+
+
 # Nordic Devices AS — Webapplikasjon
 
 Presentasjons- og bestillingsside for det fiktive selskapet **Nordic Devices
